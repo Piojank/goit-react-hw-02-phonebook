@@ -4,7 +4,7 @@ import { Contacts } from "../Contacts/Contacts";
 export const ContactList = ({ contacts, deleteContact }) => {
     return (
         <div>
-            <ul>
+            <ul className="list">
                 <Contacts contacts={contacts} deleteContact={deleteContact} />
             </ul>
         </div>
