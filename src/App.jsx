@@ -1,69 +1,69 @@
-import "./App.css";
-import React, { Component } from "react";
-// import PropTypes from "prop-types";
-import { nanoid } from "nanoid";
-import ContactForm from "./components/ContactForm/ContactForm.jsx";
-import { ContactList } from "./components/ContactList/ContactList";
-import { Filter } from "./components/Filter/Filter";
+import { Component } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import ContactForm from 'components/ContactForm/ContactForm';
+import PhonebookList from 'components/PhonebookList/PhonebookList';
+import Filter from 'components/Filter/Filter';
 
 export default class App extends Component {
-  // static propTypes = {
-  //   prop: PropTypes,
-  // };
-
   state = {
     contacts: [
-      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    filter: "",
+    filter: '',
   };
 
-  setContacts = ({ name, number }) => {
-    const { contacts } = this.state;
+  handleAddContact = (nameFromForm, numberFromForm) => {
+    let isPresent = false;
     const contact = {
-      id: nanoid(),
-      name,
-      number,
+      id: uuidv4(),
+      name: nameFromForm,
+      number: numberFromForm,
     };
-    contacts.some((i) => i.name === name)
-      ? alert(`${name} is already in contacts`)
-      : this.setState(({ contacts }) => ({
-          contacts: [contact, ...contacts],
-        }));
+    const { contacts } = this.state;
+    contacts.forEach(el => {
+      if (el.name === contact.name) {
+        alert(`${el.name} is already in contacts.`);
+        isPresent = true;
+        return;
+      }
+    });
+
+    if (isPresent) return;
+    this.setState(prevState => {
+      return { contacts: [...prevState.contacts, contact] };
+    });
   };
 
-  deleteContact = (id) => {
-    this.setState((p) => ({
-      contacts: p.contacts.filter((i) => i.id !== id),
-    }));
+  handleFilter = filter => {
+    this.setState({ filter });
   };
 
-  setFilter = (e) => {
-    const value = e.target.value.toLowerCase();
-    this.setState({ filter: value });
-  };
-
-  getContacts = () => {
+  getFilteredContacts = () => {
     const { contacts, filter } = this.state;
-    return contacts.filter((i) => i.name.toLowerCase().includes(filter));
+    return contacts.filter(el => el.name.toLowerCase().includes(filter.toLowerCase()));
+  };
+
+  handleDeleteContact = id => {
+    const { contacts } = this.state;
+    this.setState({ contacts: [...contacts.filter(el => el.id !== id)] });
   };
 
   render() {
-    const getContacts = this.getContacts();
+    const { contacts, filter } = this.state;
+    const filteredContacts = this.getFilteredContacts();
     return (
-      <div className="App">
+      <>
         <h1>Phonebook</h1>
-        <ContactForm submitForm={this.setContacts} />
+        <ContactForm onAddContact={this.handleAddContact} />
         <h2>Contacts</h2>
-        <Filter filter={this.setFilter} />
-        <ContactList
-          contacts={getContacts}
-          deleteContact={this.deleteContact}
-        />
-      </div>
+        {contacts.length > 1 && <Filter value={filter} onFilterChange={this.handleFilter} />}
+        {filteredContacts.length > 0 && (
+          <PhonebookList contacts={filteredContacts} onDelete={this.handleDeleteContact} />
+        )}
+      </>
     );
   }
 }
