@@ -34,7 +34,6 @@ export class App extends Component {
         contacts.forEach(el => {
             if (el.name === contact.name) {
                 Notify.alert(`${el.name} is already in contacts!`);
-                console.log(`${el.name} is already in contacts.`);
                 isPresent = true;
                 return;
             }
@@ -45,6 +44,9 @@ export class App extends Component {
         this.setState(prevState => {
             return { contacts: [...prevState.contacts, contact] };
         });
+
+        console.log(`New contact has been added! Name: ${contact.name}, Phone number: ${contact.number}.`);
+        Notify.success(`New contact has been added! Name: ${contact.name}, Phone number: ${contact.number}.`);
     };
 
     handleFilter = filter => {

@@ -21,9 +21,6 @@ export class ContactForm extends Component {
         evt.preventDefault();
         const { name, number } = this.state;
         
-        console.log(`New contact has been added! Name: ${name}, Phone number: ${number}.`);
-        Notify.success(`New contact has been added! Name: ${name}, Phone number: ${number}.`);
-
         this.props.onSubmit(name, number);
         this.reset();
     };
