@@ -1,12 +1,10 @@
 import { Component } from 'react';
 import s from './ContactForm.module.css';
-// import PropTypes from 'prop-types';
-// import { nanoid } from "nanoid";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const INITIAL_STATE = {
     name: "",
-    phone: "",
+    number: "",
 };
 
 export class ContactForm extends Component {
@@ -21,12 +19,12 @@ export class ContactForm extends Component {
 
     handleSubmit = evt => {
         evt.preventDefault();
-        const { name, phone } = this.state;
+        const { name, number } = this.state;
         
-        console.log(`New contact has been added! Name: ${name}, Phone number: ${phone}.`);
-        Notify.info(`New contact has been added! Name: ${name}, Phone number: ${phone}.`);
+        console.log(`New contact has been added! Name: ${name}, Phone number: ${number}.`);
+        Notify.success(`New contact has been added! Name: ${name}, Phone number: ${number}.`);
 
-        this.props.onSubmit({ ...this.state });
+        this.props.onSubmit(name, number);
         this.reset();
     };
 
@@ -39,9 +37,10 @@ export class ContactForm extends Component {
 
         return (
             <form className={s.form} onSubmit={this.handleSubmit}>
-                <label>
+                <label className={s.label}>
                     Name
                     <input 
+                        className={s.input}
                         type="name" 
                         name="name"
                         value={name}
@@ -50,11 +49,12 @@ export class ContactForm extends Component {
                         required
                     />
                 </label>
-                <label>
+                <label className={s.label}> 
                     Phone number
                     <input 
+                        className={s.input}
                         type="phone" 
-                        name="phone"
+                        name="number"
                         value={number}
                         onChange={this.handleChange}
                         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -62,7 +62,7 @@ export class ContactForm extends Component {
                     />
                 </label>
 
-                <button type="submit" className={s.button} >
+                <button type="submit" className={s.btn} >
                     Add contact
                 </button>
             </form>
