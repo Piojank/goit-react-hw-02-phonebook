@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import s from './App.module.css';
 
 import { Section } from "./Section/Section";
-// import { Notification } from "./Notification/Notification";
+import { Notification } from "./Notification/Notification";
 import { ContactForm } from "./ContactForm/ContactForm";
 import { ContactList } from "./ContactList/ContactList";
 import { Filter } from "./Filter/Filter";
@@ -33,7 +33,7 @@ export class App extends Component {
 
         contacts.forEach(el => {
             if (el.name === contact.name) {
-                Notify.alert(`${el.name} is already in contacts!`);
+                Notify.failure(`${el.name} is already in contacts!`);
                 isPresent = true;
                 return;
             }
@@ -45,7 +45,6 @@ export class App extends Component {
             return { contacts: [...prevState.contacts, contact] };
         });
 
-        console.log(`New contact has been added! Name: ${contact.name}, Phone number: ${contact.number}.`);
         Notify.success(`New contact has been added! Name: ${contact.name}, Phone number: ${contact.number}.`);
     };
 
@@ -65,7 +64,6 @@ export class App extends Component {
         if (contact) {
             const { name, number } = contact;
     
-            console.log(`Contact has been deleted! Name: ${name}, Phone number: ${number}.`);
             Notify.warning(`Contact has been deleted! Name: ${name}, Phone number: ${number}.`);
     
             this.setState({
@@ -88,6 +86,7 @@ export class App extends Component {
                     {filteredContacts.length > 0 && (
                         <ContactList contacts={filteredContacts} onDelete={this.clearContact}/>
                     )}
+                    {contacts.length < 1 && <Notification message="You phonebook is empty! Please add contact."/>}
                 </Section>
             </div>
         );

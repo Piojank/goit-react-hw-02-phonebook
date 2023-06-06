@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import s from './ContactForm.module.css';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const INITIAL_STATE = {
     name: "",
@@ -59,7 +58,7 @@ export class ContactForm extends Component {
                     />
                 </label>
 
-                <button type="submit" className={s.btn} >
+                <button type="submit" className={s.btn} disabled={!name || !number}>
                     Add contact
                 </button>
             </form>

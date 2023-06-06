@@ -38,6 +38,8 @@ label {
     white-space: nowrap;
     vertical-align: middle;
 
+    cursor: pointer;
+
     width: 110px;
     height: 40px;
     margin-top: 20px;
@@ -92,8 +94,8 @@ label {
 .btn.disabled,
 .btn:disabled {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: gray;
+    border-color: darkgrey;
 }
 
 .btn.disabled,
